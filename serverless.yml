@@ -1,0 +1,29 @@
+service: cart-service
+
+plugins:
+  - serverless-offline
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  environment:
+    POSTGRES_PASSWORD: ${env:POSTGRES_PASSWORD}
+    POSTGRES_USER: ${env:POSTGRES_USER}
+    POSTGRES_DB: ${env:POSTGRES_DB}
+    POSTGRES_HOST: ${env:POSTGRES_HOST}
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          cors: true
+          path: /
+      - http:
+          method: ANY
+          cors: true
+          path: '{proxy+}'
